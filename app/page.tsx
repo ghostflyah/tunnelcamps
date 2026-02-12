@@ -13,19 +13,22 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    async function getUser() {
+    async function checkSession() {
       const { data } = await supabase.auth.getUser();
+
+      if (!data.user) {
+        window.location.href = "/login";
+        return;
+      }
+
       setUser(data.user);
       setLoading(false);
     }
-    getUser();
+
+    checkSession();
   }, []);
 
   if (loading) return <p>Loading...</p>;
-
-  if (!user) {
-    return <p>Not logged in</p>;
-  }
 
   return (
     <main style={{ padding: 24 }}>
