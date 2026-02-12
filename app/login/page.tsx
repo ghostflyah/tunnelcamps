@@ -12,10 +12,16 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [msg, setMsg] = useState("");
 
-  async function signIn() {
-    const { error } = await supabase.auth.signInWithOtp({ email });
-    setMsg(error ? error.message : "Check your email for the login link");
-  }
+async function signIn() {
+  const { error } = await supabase.auth.signInWithOtp({
+    email,
+    options: {
+      emailRedirectTo: window.location.origin,
+    },
+  });
+
+  setMsg(error ? error.message : "Check your email for the login link");
+}
 
   return (
     <main style={{ padding: 24 }}>
